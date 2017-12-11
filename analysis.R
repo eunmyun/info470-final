@@ -1,4 +1,6 @@
 library(dplyr)
+library(ggplot2)
+library(kimisc)
 trip <- read.csv(file='data/trip.csv')
 weather <- read.csv(file = 'data/weather.csv')
 station <- read.csv(file = 'data/station.csv')
@@ -10,3 +12,20 @@ colnames(station) <- c("to_station_id", "to_lat", "to_long")
 forMap <- merge(forMap,station)
 View(forMap)
 write.csv(forMap,file = 'data/forMap.csv')
+genderFilter <- filter(trip, gender != "")
+qplot(data = genderFilter, gender, xlab = "Gender", ylab = "Number of Rides", main = "Number of Rides by Gender", fill = gender)
+p <- qplot(trip$birthyear, 
+      xlab = "Birth Year", 
+      ylab = "Number of Rides", 
+      main = "Number of rides by Birth Year", 
+      binwidth = 1,
+      fill=..count..,
+      na.rm=TRUE)
+p+scale_fill_continuous(low="deepskyblue2", high="firebrick3")
+userFilter <- filter(trip, usertype != "")
+qplot(data = userFilter, usertype, fill = usertype, na.rm = TRUE)
+trip$day <- weekdays(as.Date(trip$starttime, '%m/%d/%y', tz = "PST"))
+trip$starttime <- as.Date(trip$starttime, format = '%m/%d/%y:%H:%M', tz = "PST")
+trip$tripduration <- seconds.to.hms(trip$tripduration)
+qplot(data = trip, day)
+write.csv(trip, file = "data/tripwday.csv")
