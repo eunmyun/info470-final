@@ -1,4 +1,5 @@
 # Load necessary libraries
+install.packages("dplyr")
 library(dplyr)
 
 # Load CSV files
@@ -21,13 +22,18 @@ trip <- mutate(trip, Date = as.Date(starttime, "%m/%d/%Y"))
 ride.per.day <- table(trip$Date)
 ride.per.day <- as.data.frame(ride.per.day)
 colnames(ride.per.day) <- c("Date", "Rides")
+ride.per.day$Date <- levels(droplevels(ride.per.day$Date))
 
-hello <- filter(weather, Date %in% ride.per.day$Date)
-d <- as.Date(c("08/15/17", "08/16/17", "08/17/17"), "%m/%d/%y")
-d <- as.data.frame(d)
-f <- as.Date(c("08/15/17", "08/16/17"), "%m/%d/%y")
+weather$Date <- as.Date(weather$Date, "%m/%d/%Y")
 
-nrow(weather)
-nrow(ride.per.day)
-nrow(hello)
+weather <- filter(weather, Date <= as.Date("2015-04-17", "%Y-%m-%d"))
+weather$rides <- ride.per.day$Rides
 
+everything <- lm(rides ~ Mean_Temperature_F + MeanDew_Point_F + Mean_Humidity + Mean_Sea_Level_Pressure_In + Mean_Visibility_Miles + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+summary(everything)
+
+four <- lm(rides ~ Mean_Temperature_F + Mean_Humidity + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+summary(four)
+
+three <- lm(rides ~ Mean_Temperature_F + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+summary(three)
