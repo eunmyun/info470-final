@@ -1,3 +1,7 @@
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("kimisc")
+
 library(dplyr)
 library(ggplot2)
 library(kimisc)
@@ -28,4 +32,4 @@ trip$day <- weekdays(as.Date(trip$starttime, '%m/%d/%y', tz = "PST"))
 trip$starttime <- as.Date(trip$starttime, format = '%m/%d/%y:%H:%M', tz = "PST")
 trip$tripduration <- seconds.to.hms(trip$tripduration)
 qplot(data = trip, day)
-write.csv(trip, file = "data/tripwday.csv")
+write.csv(trip, file = "data/tripwhiday.csv")
