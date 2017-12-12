@@ -32,8 +32,11 @@ weather$rides <- ride.per.day$Rides
 everything <- lm(rides ~ Mean_Temperature_F + MeanDew_Point_F + Mean_Humidity + Mean_Sea_Level_Pressure_In + Mean_Visibility_Miles + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
 summary(everything)
 
-four <- lm(rides ~ Mean_Temperature_F + Mean_Humidity + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+four <- lm(rides ~ MeanDew_Point_F + Mean_Humidity + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
 summary(four)
 
-three <- lm(rides ~ Mean_Temperature_F + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+three <- lm(rides ~ Mean_Humidity + Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
 summary(three)
+
+two <- lm(rides ~ Mean_Wind_Speed_MPH + Precipitation_In, data=weather)
+summary(two)
